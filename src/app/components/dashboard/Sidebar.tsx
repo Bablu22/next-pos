@@ -4,9 +4,9 @@ import { Fragment, useEffect, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { navigation } from "@/lib/sidebarOptions";
+import { navigation } from "@/lib/contants";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
@@ -92,7 +92,7 @@ const Sidebar = () => {
                       <li>
                         <ul role="list" className="-mx-2 space-y-1">
                           {sidebarNavigation.map((item) => (
-                            <li key={item.name}>
+                            <li key={item.id}>
                               <Link
                                 href={item.href}
                                 className={classNames(
@@ -147,28 +147,27 @@ const Sidebar = () => {
               >
                 <motion.li layout className="-mx-2 space-y-1">
                   {sidebarNavigation.map((item) => (
-                    <>
-                      <Link
-                        href={item.href}
+                    <Link
+                      key={item.id}
+                      href={item.href}
+                      className={classNames(
+                        item.current
+                          ? "bg-indigo-700 text-white  "
+                          : "text-white hover:text-white hover:bg-gray-800",
+                        "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold transition ease-in-out delay-75 "
+                      )}
+                    >
+                      <item.icon
                         className={classNames(
                           item.current
-                            ? "bg-indigo-700 text-white  "
-                            : "text-white hover:text-white hover:bg-gray-800",
-                          "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold transition ease-in-out delay-75 "
+                            ? "text-white"
+                            : "text-indigo-200 group-hover:text-white",
+                          "h-6 w-6 shrink-0"
                         )}
-                      >
-                        <item.icon
-                          className={classNames(
-                            item.current
-                              ? "text-white"
-                              : "text-indigo-200 group-hover:text-white",
-                            "h-6 w-6 shrink-0"
-                          )}
-                          aria-hidden="true"
-                        />
-                        {item.name}
-                      </Link>
-                    </>
+                        aria-hidden="true"
+                      />
+                      {item.name}
+                    </Link>
                   ))}
                 </motion.li>
               </motion.ul>

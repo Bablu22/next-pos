@@ -5,10 +5,8 @@ interface Props {
   searchParams: string;
 }
 
-const PosLayout = (props) => {
-  console.log(props);
-
-  return <div className="container mx-auto p-4">{/* {children} */}</div>;
+const PosLayout = ({ children }: { children: ReactNode }) => {
+  return <div className="">{children}</div>;
 };
 
 export default PosLayout;
