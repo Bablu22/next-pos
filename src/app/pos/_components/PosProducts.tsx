@@ -71,7 +71,7 @@ const PosProducts = ({ products, categories }: Props) => {
           onChange={handleSelectChange}
         />
       </div>
-      <div className="mt-4 flex-1 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4 max-h-[24rem]">
+      <div className="mt-4  overflow-y-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4 max-h-[40rem]">
         {products.length > 0 ? (
           products.map((product) => (
             <ProductCard key={product.id} product={product} />

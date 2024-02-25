@@ -22,7 +22,13 @@ export const navigation = [
     icon: BriefcaseIcon,
     current: false,
   },
-  { id: 3, name: "Customers", href: "/", icon: UsersIcon, current: false },
+  {
+    id: 3,
+    name: "Customers",
+    href: "/dashboard/customers",
+    icon: UsersIcon,
+    current: false,
+  },
   { id: 4, name: "Products", href: "/", icon: FolderIcon, current: false },
   {
     id: 5,

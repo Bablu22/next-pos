@@ -57,7 +57,7 @@ const PosCartContainer = () => {
         </div>
       </div>
 
-      <div className="w-full mt-5 h-96 o overflow-y-auto overflow-x-hidden">
+      <div className="w-full mt-5">
         <PosCart />
       </div>
     </div>

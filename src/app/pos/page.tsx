@@ -31,7 +31,7 @@ const PosDashboard = async ({ searchParams }: Props) => {
   console.log(searchParams);
 
   return (
-    <div className=" bg-gray-100">
+    <div className=" bg-gray-100 min-h-full">
       <header className="bg-white shadow">
         <div className="container mx-auto py-6 flex justify-between items-center">
           <div className="flex items-center space-x-4">
@@ -62,8 +62,8 @@ const PosDashboard = async ({ searchParams }: Props) => {
       </header>
 
       <main className="container mx-auto py-8">
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 h-[600px]">
-          <div className="bg-white p-6 rounded">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 ">
+          <div className="bg-white p-2 rounded h-full">
             <PosCartContainer />
           </div>
           <div className="bg-white p-6 rounded">
