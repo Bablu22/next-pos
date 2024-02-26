@@ -20,13 +20,33 @@ model Product {
 }
 
 model Customer {
-  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
   name    String
-  email   String @unique
+  email   String  @unique
   phone   String
   street  String
   city    String
   state   String
   zipCode String
   country String
+  Order   Order[]
+}
+
+model Order {
+  id              String      @id @default(auto()) @map("_id") @db.ObjectId
+  customerId      String      @db.ObjectId
+  customer        Customer    @relation(fields: [customerId], references: [id])
+  itemId          String      @db.ObjectId
+  items           OrderItem[]
+  totalPrice      Float
+  shippingAddress String
+}
+
+model OrderItem {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  price    Float
+  quantity Int
+  order    Order  @relation(fields: [orderId], references: [id])
+  orderId  String @db.ObjectId
 }

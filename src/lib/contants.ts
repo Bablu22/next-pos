@@ -29,16 +29,23 @@ export const navigation = [
     icon: UsersIcon,
     current: false,
   },
-  { id: 4, name: "Products", href: "/", icon: FolderIcon, current: false },
   {
     id: 5,
     name: "Invoice",
-    href: "/",
+    href: "/dashboard/invoice",
     icon: DocumentDuplicateIcon,
+    current: false,
+  },
+  {
+    id: 4,
+    name: "Products",
+    href: "/",
+    icon: FolderIcon,
     current: false,
   },
   { id: 6, name: "Reports", href: "/", icon: ChartPieIcon, current: false },
 ];
+
 export const storeLocation = [
   {
     id: 1,

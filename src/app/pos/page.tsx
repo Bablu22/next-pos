@@ -12,7 +12,8 @@ import {
   extractCategoriesFromProduct,
   getProductsFromDB,
 } from "@/actions/product";
-import { Product } from "@/types";
+import { getCustomrsFromDB } from "@/actions/customers";
+import { Option } from "../components/ui/SelectOption";
 
 interface Props {
   searchParams: {
@@ -28,7 +29,15 @@ const PosDashboard = async ({ searchParams }: Props) => {
     category: searchParams.category,
   });
   const categories = await extractCategoriesFromProduct();
-  console.log(searchParams);
+
+  const customers = await getCustomrsFromDB();
+  const customersOption = customers.data?.map((customer) => {
+    return {
+      id: customer.id,
+      name: customer.name,
+      value: customer.id,
+    };
+  });
 
   return (
     <div className=" bg-gray-100 min-h-full">
@@ -64,7 +73,7 @@ const PosDashboard = async ({ searchParams }: Props) => {
       <main className="container mx-auto py-8">
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 ">
           <div className="bg-white p-2 rounded h-full">
-            <PosCartContainer />
+            <PosCartContainer customers={customersOption ?? []} />
           </div>
           <div className="bg-white p-6 rounded">
             <PosProducts

@@ -16,9 +16,20 @@ import {
 import formatPrice from "@/utils/formatPrice";
 import cartAnimation from "../../../../public/cart.json";
 import { Player } from "@lottiefiles/react-lottie-player";
+import { Option } from "@/app/components/ui/SelectOption";
+import Modal from "@/app/components/ui/Modal";
+import { openModal } from "@/lib/features/modalSlice";
+import toast from "react-hot-toast";
+import { createOrder } from "@/actions/orders";
+import ConfirmOrder from "./ConfirmOrder";
 
-const PosCart = () => {
+interface Props {
+  user: Option | null;
+}
+
+const PosCart = ({ user }: Props) => {
   const cartState = useAppSelector((state) => state.cart.products);
+  const confirmOrdermodalOpen = useAppSelector((state) => state.modal.isOpen);
   const dispatch = useAppDispatch();
 
   const [taxRate, setTaxRate] = useState(10); // Represented as 10 for 10%
@@ -32,22 +43,60 @@ const PosCart = () => {
 
   const tax = (subtotal * taxRate) / 100;
   const total = subtotal + tax + shippingCost - discountAmount;
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+    dispatch(openModal());
+  };
+
+  const orderData = {
+    customerId: user?.id as string,
+    items: cartState.map((item) => {
+      return {
+        productId: item.id,
+        quantity: item.quantity,
+        price: item.price,
+        name: item.name,
+      };
+    }),
+    totalPrice: total,
+    shippingAddress: "your_shipping_address",
+  };
+
+  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleOrder = async () => {
+    try {
+      setLoading(true);
+      const res: any = await createOrder(orderData);
+      if (res.error) throw new Error(res.error);
+
+      toast.success("Order placed successfully");
+      setSuccess(false);
+      setSuccess(true);
+      dispatch(clearCart());
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <AnimatePresence>
       <div className=" h-96  overflow-y-auto overflow-x-hidden">
         {cartState.length === 0 ? (
-          <div className="mt-16">
+          <div className="mt-16 -z-10">
             <Player
               autoplay
               loop
               src={cartAnimation}
               style={{ height: "100px", width: "100px" }}
-            >
-              <p className="text-gray-600 text-center mt-4">
-                Your cart is empty.
-              </p>
-            </Player>
+            ></Player>
+            <p className="text-gray-600 text-center mt-4">
+              Your cart is empty.
+            </p>
           </div>
         ) : (
           <table className="min-w-full divide-y divide-gray-200 rounded border ">
@@ -182,6 +231,7 @@ const PosCart = () => {
       </dl>
       <div className="mt-6 flex items-center justify-between space-x-5">
         <button
+          onClick={handleOpenModal}
           type="submit"
           className="w-full rounded-md border border-transparent bg-gray-900 px-4 py-1 text-base font-medium text-white shadow-sm "
         >
@@ -197,8 +247,44 @@ const PosCart = () => {
           Cancel
         </button>
       </div>
+      {isModalOpen && (
+        <Modal>
+          {success ? (
+            <ConfirmOrder />
+          ) : (
+            <div className="p-4">
+              {/* Order summary */}
+              <h2 className="text-xl font-semibold mb-2">Order Summary</h2>
+              <div className="flex justify-between">
+                <span>Subtotal:</span>
+                <span>{formatPrice(subtotal)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Shipping:</span>
+                <span>{formatPrice(shippingCost)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Tax:</span>
+                <span>{formatPrice(tax)}</span>
+              </div>
+              <hr className="my-2" />
+              <div className="flex justify-between font-semibold">
+                <span>Total:</span>
+                <span>{formatPrice(total)}</span>
+              </div>
+              {/* Button to confirm order */}
+              <button
+                onClick={handleOrder}
+                disabled={loading}
+                className="w-full mt-4 rounded-md border border-transparent bg-green-500 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-green-600"
+              >
+                {loading ? "Loading" : "Confirm Order"}
+              </button>
+            </div>
+          )}
+        </Modal>
+      )}
     </AnimatePresence>
   );
 };
-
 export default PosCart;

@@ -5,25 +5,11 @@ import { PlusIcon, TruckIcon, UserIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import PosCart from "./PosCart";
 
-const PosCartContainer = () => {
-  const customers = [
-    {
-      id: 1,
-      name: "John Doe",
-      value: "JD001",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      value: "JS002",
-    },
-    {
-      id: 3,
-      name: "Jane Doe",
-      value: "JD003",
-    },
-  ];
+interface Props {
+  customers: Option[];
+}
 
+const PosCartContainer = ({ customers }: Props) => {
   const [selectedOption, setSelectedOption] = useState<Option | null>(
     customers[0]
   );
@@ -58,7 +44,7 @@ const PosCartContainer = () => {
       </div>
 
       <div className="w-full mt-5">
-        <PosCart />
+        <PosCart user={selectedOption} />
       </div>
     </div>
   );
