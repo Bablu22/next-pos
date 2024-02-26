@@ -30,7 +30,7 @@ export const saveCustomerToDB = async (customer: ICustomer) => {
       },
     });
 
-    revalidatePath("/dashboard/customers/create");
+    revalidatePath("/dashboard/customers");
     return {
       success: true,
       message: "Customer created successfully",
@@ -81,7 +81,7 @@ export const editCustomerFromDB = async (customer: ICustomer, id: string) => {
         error: "Could not update customer",
       };
     }
-    revalidatePath("/dashboard/customers/create");
+    revalidatePath("/dashboard/customers");
 
     return {
       data: res,

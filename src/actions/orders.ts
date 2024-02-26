@@ -9,7 +9,6 @@ export const createOrder = async (orderData: any) => {
 
     const createdOrder = await prisma.order.create({
       data: {
-        id,
         customerId,
         totalPrice,
         shippingAddress,
